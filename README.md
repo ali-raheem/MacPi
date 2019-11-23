@@ -3,9 +3,21 @@ Create macsec encrypted ethernet links automatically and transparently with mini
 
 ## Running
 
-On the first device called the "master" run `./sync.sh -m`, when prompted on the other device called the "slave" run `./sync.sh`.
+1. Clone this repository
+2. Start master instance
+3. Start slave instance
+4. Confirm hash match on both devices
 
-Compared the displayed hashes, select Y if, and only if, they match. These are the hashes of each devices public key and if they don't match either there was a serious error or there is a man-in-the-middle attack going on.
+```
+git clone git@github.com:ali-raheem/PiSec.git --depth=1
+master# bash sync.sh -m
+slave# bash sync.sh
+```
+If you don't want to run the script in a root shell use ```sudo```.
+
+You need to confirm the public key hashes on both devices with ```y``` when promited.
+
+Running the script again will prompt you to reuse the last config or start fresh. Start fresh if there was an error previously.
 
 They link will then automatically be set up.
 
