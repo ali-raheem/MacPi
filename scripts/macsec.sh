@@ -9,3 +9,5 @@ ip macsec add macsec0 tx sa 0 pn 1 on key 00 $TX_KEY
 ip macsec add macsec0 rx port 1 address $MAC sa 0 pn 1 on key 00 $RX_KEY
 ip link set macsec0 up
 ip addr add $IP/24 dev macsec0
+
+echo "Setup macsec0 with ip: $IP/24."

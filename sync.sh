@@ -1,7 +1,21 @@
 #!/bin/bash
 
+function display_yn {
+  echo -n $1" [yN] "
+  read input
+  if [ $input != "y" ]
+     then
+       rm config
+       echo "Deleting stale config..."
+       echo "Quitting..."
+       exit
+  fi
+}
+
+
 if [ -f config ]
 then
+  display_yn "Reuse config?"
   bash scripts/macsec.sh
   exit 0
 fi
@@ -89,6 +103,8 @@ else
   echo $ALICE_HASH
 fi
 
+display_yn "Do hashes match?"
+
 if [ -f keys/shared_secret.bin ]
 then
   rm keys/shared_secret.bin
@@ -125,3 +141,4 @@ then
 fi
 
 bash scripts/macsec.sh
+
