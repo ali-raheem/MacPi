@@ -100,12 +100,18 @@ KEY=`openssl dgst keys/shared_secret.bin|cut -d' ' -f2`
 MASTER_TX_KEY=${KEY:0:32}
 SLAVE_TX_KEY=${KEY:32:64}
 
-echo $MASTER_TX_KEY >> config
-echo $SLAVE_TX_KEY >> config
+if [ $MASTER_SLAVE -eq 1 ]
+then
+  echo $MASTER_TX_KEY >> config
+  echo $SLAVE_TX_KEY >> config
+else
+  echo $SLAVE_TX_KEY >> config
+  echo $MASTER_TX_KEY >> config
+fi
 
 # Setup macsec $BOB_MAC $MASTER_TX_KEY $SLAVE_TX_KEY
 
-if [ DEBUG -ne 1 ]
+if [ $DEBUG -ne 1 ]
 then
    rm keys/Alice.* keys/Bob.* keys/shared_secret.bin
 fi
