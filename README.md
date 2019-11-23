@@ -13,3 +13,9 @@ They link will then automatically be set up.
 
 * Flask
 * openssl
+
+## Todo
+
+* iptables to forward/NAT traffic
+* IPv6
+* Use SPI screen and buttons on raspberry pi

@@ -7,7 +7,6 @@ app = Flask(__name__)
 def exchange_pubkey():
     if request.method == 'POST':
         open('keys/Bob.pub.pem.b64', 'w').write(request.form['pubkey'])
-        open('config', 'w').write("mac="+request.form['mac']+"\n")
         return open('keys/Alice.pub.pem', 'r').read() #Now quit
     return 'Error'
 
