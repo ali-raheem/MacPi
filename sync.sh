@@ -1,11 +1,12 @@
 #!/bin/bash
 
+DEBUG=1
 MASTER_SLAVE=0
 IP_BASE=192.168.42
 IP_OFFSET=1
 MASTER_IP=`printf %s.%s $IP_BASE $IP_OFFSET`
 SLAVE_IP=`printf %s.%s $IP_BASE $(($IP_OFFSET + 1))`
-#MASTER_IP=192.168.1.120
+
 
 ALICE_IFACE=eth0
 
@@ -46,6 +47,7 @@ then
 else
   PUBKEY=`cat keys/Alice.pub.pem|base64`
   wget -X POST --post-data "mac=$ALICE_MAC&pubkey=$PUBKEY" "http://$MASTER_IP:5000/public_key" -O keys/Bob.pub.pem
+  wget "http://$MASTER_IP:5000/quit" -q0 &>/dev/null
 fi
 
 ip link set $ALICE_IFACE down
@@ -97,5 +99,7 @@ echo $SLAVE_TX_KEY >> config
 
 # Setup macsec $BOB_MAC $MASTER_TX_KEY $SLAVE_TX_KEY
 
-rm keys/Alice.* keys/Bob.* keys/shared_secret.bin
-
+if [ DEBUG -ne 1 ]
+then
+   rm keys/Alice.* keys/Bob.* keys/shared_secret.bin
+fi
