@@ -1,6 +1,11 @@
 #!/bin/bash
 
 MASTER_SLAVE=0
+IP_BASE=192.168.42
+IP_OFFSET=1
+MASTER_IP=`printf %s.%s $IP_BASE $IP_OFFSET`
+SLAVE_IP=`printf %s.%s $IP_BASE $(($IP_OFFSET + 1))`
+
 while getopts ":m" arg; do
   case $arg in
     m)
@@ -17,7 +22,7 @@ then
   python3 scripts/server.py
 else
   PUBKEY=`cat keys/Alice.pub.pem|base64`
-  wget -X POST --post-data "pubkey=$PUBKEY" http://127.0.0.1:5000/public_key -O keys/Bob.pub.pem
+  wget -X POST --post-data "pubkey=$PUBKEY" "http://$MASTER_IP:5000/public_key" -O keys/Bob.pub.pem
 
 fi
 NEW_HASH=`openssl dgst keys/Alice.pem|cut -d' ' -f2`
