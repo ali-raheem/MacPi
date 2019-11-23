@@ -16,6 +16,6 @@ They link will then automatically be set up.
 
 ## Todo
 
-* iptables to forward/NAT traffic
+* use iptables to forward/NAT traffic to allow bridging
 * IPv6
 * Use SPI screen and buttons on raspberry pi
