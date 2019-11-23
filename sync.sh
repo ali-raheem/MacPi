@@ -27,6 +27,8 @@ shift $((OPTIND - 1))
 
 ALICE_MAC=`cat /sys/class/net/$ALICE_IFACE/address`
 
+echo "IFACE="$ALICE_IFACE > config
+
 openssl genpkey -paramfile keys/params.pem -out keys/Alice.pem 2>/dev/null
 openssl ec -in keys/Alice.pem -pubout -out keys/Alice.pub.pem 2>/dev/null
 
