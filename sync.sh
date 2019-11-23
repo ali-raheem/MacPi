@@ -5,26 +5,49 @@ IP_BASE=192.168.42
 IP_OFFSET=1
 MASTER_IP=`printf %s.%s $IP_BASE $IP_OFFSET`
 SLAVE_IP=`printf %s.%s $IP_BASE $(($IP_OFFSET + 1))`
+#MASTER_IP=192.168.1.120
 
-while getopts ":m" arg; do
-  case $arg in
+ALICE_IFACE=eth0
+
+while getopts ":ma:" OPT
+do
+  case $OPT in
     m)
       MASTER_SLAVE=1
+      echo "Running as master";;
+    a)
+      ALICE_IFACE=$OPTARG
+      echo "Using interface $OPTARG";;
+    \?)
+      echo "-m for Master mode\n-a eth0 to set interface to eth0"
+      exit 1;;
   esac
 done
+shift $((OPTIND - 1))
+
+ALICE_MAC=`cat /sys/class/net/$ALICE_IFACE/address`
 
 openssl genpkey -paramfile keys/params.pem -out keys/Alice.pem 2>/dev/null
 openssl ec -in keys/Alice.pem -pubout -out keys/Alice.pub.pem 2>/dev/null
 
+ip link set $ALICE_IFACE up
+if [ $MASTER_SLAVE -eq 1 ]
+then
+  ip addr add `printf %s/24 $MASTER_IP` dev $ALICE_IFACE
+else
+  ip addr add `printf %s/24 $SLAVE_IP` dev $ALICE_IFACE
+fi
 HASH=`openssl dgst keys/Alice.pem|cut -d' ' -f2`
 if [ $MASTER_SLAVE -eq 1 ]
 then
   python3 scripts/server.py
 else
   PUBKEY=`cat keys/Alice.pub.pem|base64`
-  wget -X POST --post-data "pubkey=$PUBKEY" "http://$MASTER_IP:5000/public_key" -O keys/Bob.pub.pem
-
+  wget -X POST --post-data "mac=$ALICE_MAC&pubkey=$PUBKEY" "http://$MASTER_IP:5000/public_key" -O keys/Bob.pub.pem
 fi
+
+ip link set $ALICE_IFACE down
+
 NEW_HASH=`openssl dgst keys/Alice.pem|cut -d' ' -f2`
 if [ "$HASH" != "$NEW_HASH" ]
 then
@@ -67,8 +90,8 @@ KEY=`openssl dgst keys/shared_secret.bin|cut -d' ' -f2`
 MASTER_TX_KEY=${KEY:0:32}
 SLAVE_TX_KEY=${KEY:32:64}
 
-echo $MASTER_TX_KEY
-echo $SLAVE_TX_KEY
+echo $MASTER_TX_KEY >> config
+echo $SLAVE_TX_KEY >> config
 
 # Setup macsec $BOB_MAC $MASTER_TX_KEY $SLAVE_TX_KEY
 
