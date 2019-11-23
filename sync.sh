@@ -50,7 +50,13 @@ else
   wget "http://$MASTER_IP:5000/quit" -q0 &>/dev/null
 fi
 
-ip link set $ALICE_IFACE down
+if [ $MASTER_SLAVE -eq 1 ]
+then
+  ip addr del `printf %s/24 $MASTER_IP` dev $ALICE_IFACE
+else
+  ip addr del `printf %s/24 $SLAVE_IP` dev $ALICE_IFACE
+fi
+
 
 NEW_HASH=`openssl dgst keys/Alice.pem|cut -d' ' -f2`
 if [ "$HASH" != "$NEW_HASH" ]
