@@ -23,6 +23,7 @@ They link will then automatically be set up.
 
 ## Dependencies
 
+* macsec (Kernel >= 4.6)
 * Flask
 * openssl
 
@@ -32,3 +33,8 @@ They link will then automatically be set up.
 * use iptables to forward/NAT traffic to allow bridging?
 * IPv6?
 * Use SPI screen and buttons on raspberry pi
+
+## Notes
+
+* For raspberry pi (atleast) you will need to compile the macsec module. It's [easy](https://www.raspberrypi.org/documentation/linux/kernel/configuring.md), just make sure to enable macsec as a module in .config (uncomment `macsec m`).
+* There will be a performance hit, on my ancient laptop 950 mbps without macsec 850 mbps with macsec. On RPi1 60 mbps to 12 mbps testing with iperf3.
