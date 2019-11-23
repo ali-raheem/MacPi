@@ -38,4 +38,4 @@ They link will then automatically be set up.
 
 * For raspberry pi (atleast) you will need to compile the macsec module. It's [easy](https://www.raspberrypi.org/documentation/linux/kernel/configuring.md), just make sure to enable macsec as a module in .config (uncomment `macsec m`).
 * There will be a performance hit, on my ancient laptop 950 mbps without macsec 850 mbps with macsec. On RPi1 60 mbps to 12 mbps testing with iperf3.
-* Currently using brainpoolP512t1, maybe there is something better? Should be hashing params file? Or just using a named curve?
+* Currently using brainpoolP512t1, maybe there is something [better](https://safecurves.cr.yp.to/)? Should be hashing params file? Or just using a named curve?
