@@ -3,6 +3,7 @@ Create macsec encrypted ethernet links automatically and transparently with mini
 
 ## Running
 
+### Setup
 1. Clone this repository
 2. Start master instance
 3. Start slave instance
@@ -20,6 +21,10 @@ You need to confirm the public key hashes on both devices with ```y``` when prom
 Running the script again will prompt you to reuse the last config or start fresh. Start fresh if there was an error previously.
 
 They link will then automatically be set up.
+
+### After reboot
+
+If you want to re-establish the link without user input or changing the keys then just run `scripts/macsec.sh` on startup.
 
 ## Dependencies
 
