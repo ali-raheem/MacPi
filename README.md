@@ -27,9 +27,10 @@ If you want to re-establish the link without user input or changing the keys the
 
 ## Dependencies
 
-* macsec (Kernel >= 4.6)
-* Flask
+* MACsec (in Linux kernel >= 4.6)
+* Flask (and Python3)
 * openssl
+* iproute2
 
 ## Todo
 
