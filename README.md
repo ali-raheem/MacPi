@@ -1,4 +1,4 @@
-# PiSec
+# MacPi
 Create macsec encrypted ethernet links automatically and transparently with minimal interaction
 
 ## Running
