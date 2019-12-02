@@ -1,5 +1,8 @@
 # MacPi
 Create macsec encrypted ethernet links automatically and transparently with minimal interaction. Intended to run between two Raspberry Pi's but should work on any OS which supports MACsec.
+
+Aiming to be an opensource, cheap hardware, high security, easy to use bump in the wire solution.
+
 ## Running
 
 ### Setup
